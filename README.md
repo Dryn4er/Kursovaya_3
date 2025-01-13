@@ -7,7 +7,7 @@
 
 1. Клонируйте репозиторий:
 ```
-https://github.com/Dryn4er/Kursovaya_2.git
+https://github.com/Dryn4er/Kursovaya_3.git
 ```
 2. Установите зависимости:
 ```

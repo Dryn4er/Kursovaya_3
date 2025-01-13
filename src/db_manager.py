@@ -12,15 +12,17 @@ class DBManager:
         try:
             connection = psycopg2.connect(database=self.database_name, **self.params)
             with connection.cursor() as cursor:
-                cursor.execute('SELECT company_name, COUNT(vacancy_id) '
-                               'FROM companies '
-                               'JOIN vacancies USING (company_id) '
-                               'GROUP BY company_name;')
+                cursor.execute(
+                    "SELECT company_name, COUNT(vacancy_id) "
+                    "FROM companies "
+                    "JOIN vacancies USING (company_id) "
+                    "GROUP BY company_name;"
+                )
 
                 data = cursor.fetchall()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            return f'[INFO] {error}'
+            return f"[INFO] {error}"
 
         connection.close()
         return data
@@ -30,14 +32,16 @@ class DBManager:
         try:
             connection = psycopg2.connect(database=self.database_name, **self.params)
             with connection.cursor() as cursor:
-                cursor.execute('SELECT title_vacancy, company_name, salary, vacancies.link '
-                               'FROM vacancies '
-                               'JOIN companies USING (company_id);')
+                cursor.execute(
+                    "SELECT title_vacancy, company_name, salary, vacancies.link "
+                    "FROM vacancies "
+                    "JOIN companies USING (company_id);"
+                )
 
                 data = cursor.fetchall()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            return f'[INFO] {error}'
+            return f"[INFO] {error}"
 
         connection.close()
         return data
@@ -47,15 +51,17 @@ class DBManager:
         try:
             connection = psycopg2.connect(database=self.database_name, **self.params)
             with connection.cursor() as cursor:
-                cursor.execute('SELECT company_name, round(AVG(salary)) AS average_salary '
-                               'FROM companies '
-                               'JOIN vacancies USING (company_id) '
-                               'GROUP BY company_name;')
+                cursor.execute(
+                    "SELECT company_name, round(AVG(salary)) AS average_salary "
+                    "FROM companies "
+                    "JOIN vacancies USING (company_id) "
+                    "GROUP BY company_name;"
+                )
 
                 data = cursor.fetchall()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            return f'[INFO] {error}'
+            return f"[INFO] {error}"
 
         connection.close()
         return data
@@ -64,14 +70,12 @@ class DBManager:
         try:
             connection = psycopg2.connect(database=self.database_name, **self.params)
             with connection.cursor() as cursor:
-                cursor.execute('SELECT * '
-                               'FROM vacancies '
-                               'WHERE salary > (SELECT AVG(salary) FROM vacancies);')
+                cursor.execute("SELECT * " "FROM vacancies " "WHERE salary > (SELECT AVG(salary) FROM vacancies);")
 
                 data = cursor.fetchall()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            return f'[INFO] {error}'
+            return f"[INFO] {error}"
 
         connection.close()
         return data
@@ -80,17 +84,19 @@ class DBManager:
         try:
             connection = psycopg2.connect(database=self.database_name, **self.params)
             with connection.cursor() as cursor:
-                cursor.execute(f"""
+                cursor.execute(
+                    f"""
                 SELECT * 
                 FROM vacancies
                 WHERE lower(title_vacancy) LIKE '%{keyword}%'
                 OR lower(title_vacancy) LIKE '%{keyword}'
-                OR lower(title_vacancy) LIKE '{keyword}%'""")
+                OR lower(title_vacancy) LIKE '{keyword}%'"""
+                )
 
                 data = cursor.fetchall()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            return f'[INFO] {error}'
+            return f"[INFO] {error}"
 
         connection.close()
         return data
